@@ -7,6 +7,19 @@ import '@/global.css';
 
 import { Platform } from 'react-native';
 
+
+export const MOODS = [
+  { label: "Happy", emoji: "😄" },
+  { label: "Confused", emoji: "😕" },
+  { label: "Giggly", emoji: "🤭" },
+  { label: "Desperate", emoji: "😰" },
+  { label: "Excited", emoji: "🤩" },
+  { label: "Emotional", emoji: "🥲" },
+];
+
+export const PHONE_COLORS = ["#2f9fd8", "#e91e8c", "#7ac943", "#f7a41d", "#8e5bd4", "#ff5c5c"];
+
+
 export const Colors = {
   light: {
     text: '#000000',
