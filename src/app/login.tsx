@@ -45,7 +45,7 @@ export default function Login() {
   return (
     <View style={styles.screen}>
       <Text style={styles.logo}>SlapBox</Text>
-      <Text style={styles.tag}>{mode === "signin" ? "welcome back" : "join hollywood arts"}</Text>
+      <Text style={styles.tag}>{mode === "signin" ? "welcome back" : "lets get frutiger"}</Text>
 
       {mode === "signup" && (
         <TextInput style={styles.input} placeholder="Your name" placeholderTextColor="#677"
@@ -63,7 +63,7 @@ export default function Login() {
 
       <Pressable onPress={() => setMode(mode === "signin" ? "signup" : "signin")}>
         <Text style={styles.switchTxt}>
-          {mode === "signin" ? "new here? make an account" : "have an account? sign in"}
+          {mode === "signin" ? "Register" : "have an account? sign in"}
         </Text>
       </Pressable>
     </View>

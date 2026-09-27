@@ -1,7 +1,7 @@
+import { twemoji } from "@/constants/theme";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, View } from "react-native";
-
+import { Image, StyleSheet, Text, View } from "react-native";
 
 export type Post = {
   id: string;
@@ -17,8 +17,7 @@ function GradientName({ name }: { name: string }) {
   return (
     <MaskedView maskElement={<Text style={styles.who}>{name}:</Text>}>
       <LinearGradient
-        colors={["#020202", "#def1f3", "#05b740"]}
-        locations={[0, 0.45, 1]}
+        colors={["#421a92", "#231562"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
       >
@@ -30,8 +29,8 @@ function GradientName({ name }: { name: string }) {
 
 export default function SlapCard({ post }: { post: Post }) {
   return (
-    <View style={[styles.card]}>
-      {/* framed avatar + update block*/}
+    <View style={styles.card}>
+      {/* framed avatar + update block */}
       <View style={styles.leftCol}>
         <View style={styles.avatarFrame}>
           <Text style={styles.avatar}>{post.avatar}</Text>
@@ -49,16 +48,22 @@ export default function SlapCard({ post }: { post: Post }) {
       >
         <GradientName name={post.name} />
         <View style={styles.bodyWrap}>
-        <Text style={styles.body}>{post.body}</Text>
-        </View>        
-<View style={styles.feelingStrip}>
-  <Text style={styles.feelingTxt}>
-    FEELING: <Text style={styles.feelingBold}>{post.mood.label}</Text>
-  </Text>
-  <Text style={styles.feelingEmoji}>{post.mood.emoji}</Text>
-</View>
-
+          <Text style={styles.body}>{post.body}</Text>
+        </View>
+        <View style={styles.feelingStrip}>
+          <Text style={styles.feelingTxt}>
+            FEELING:   <Text style={styles.feelingBold}>{post.mood.label}</Text>
+          </Text>
+          {/* invisible slot reserves the space where the overlay emoji lands */}
+          <View style={{ width: 18, height: 18 }} />
+        </View>
       </LinearGradient>
+
+      {/* emoji overlay: child of the CARD (not the clipped box), painted on top */}
+      <Image
+        source={{ uri: twemoji(post.mood.emoji) }}
+        style={styles.moodEmoji}
+      />
     </View>
   );
 }
@@ -71,7 +76,7 @@ const styles = StyleSheet.create({
     padding: 12,
     minHeight: 150,
     borderRadius: 20,
-    borderColor:"#a10861",
+    borderColor: "#a10861",
     borderTopLeftRadius: 32,
     shadowColor: "#000",
     shadowOpacity: 0.35,
@@ -83,10 +88,10 @@ const styles = StyleSheet.create({
     width: 75,
     alignItems: "center",
     alignSelf: "flex-end",
-    padding:6,
-    margin:0,
-    borderRadius:12,
-    backgroundColor:"#ff2d78",
+    padding: 6,
+    margin: 0,
+    borderRadius: 12,
+    backgroundColor: "#c94472",
   },
   avatarFrame: {
     width: 60,
@@ -103,11 +108,10 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
   },
   updateTxt: {
-    color: "#e5b362",
-    fontWeight: "900",
+    color: "#efc959",
+    fontWeight: "500",
     fontSize: 12,
     letterSpacing: 0.5,
-    
   },
   msgBox: {
     flex: 1,
@@ -115,43 +119,49 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0,0,0,0.35)",
     borderRadius: 12,
     padding: 10,
-    paddingBottom: 0,      // strip can now sit flush against the bottom edge
-    overflow: "hidden",    // ← clips ALL children to the rounded shape, both platforms
+    paddingBottom: 0,
+    overflow: "hidden",
   },
   who: {
-    fontFamily: "Baloo2_800ExtraBold",
+    fontFamily: "futura",
+    fontWeight: "bold",
+    color: "purple",
+    textTransform: "uppercase",
     fontSize: 17,
     marginBottom: 2,
   },
   body: {
-    fontFamily: "Baloo2_400Regular",
+    fontFamily: "Nunito Sans",
     fontSize: 15,
     color: "#14202b",
     textAlign: "center",
   },
-feelingStrip: {
-  flexDirection: "row",          // children side by side
-  alignItems: "center",          // vertically centered
-  justifyContent: "space-between", // first child left, last child right
-  backgroundColor: "#5cb2e0",
-  marginHorizontal: -10,
-  paddingHorizontal: 10,
-  paddingVertical: 5,
-  borderBottomLeftRadius: 10,
-  borderBottomRightRadius: 10,
-},
-feelingEmoji: { fontSize: 16 },   // clean the hacks out: no alignSelf/right/alignItems
-feelingTxt: {
-  fontFamily: "Baloo2_800ExtraBold",
-  fontSize: 12,
-  color: "#cc450b",               // see below — yellow-brown won't read on blue
-},
-
-  feelingBold: { fontStyle: "italic" },
-
+  feelingStrip: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#5cb2e0",
+    marginHorizontal: -10,
+    paddingVertical: 5,
+    padding: 8,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+  feelingTxt: {
+    fontFamily: "Baloo2_800ExtraBold",
+    fontSize: 12,
+    color: "#cc450b",
+  },
+  feelingBold: { fontSize: 15, color: "purple" },
   bodyWrap: {
-  flex: 1,                 // takes the space between name and strip
-  justifyContent: "center" // centers its child vertically
-},
-
+    flex: 1,
+    justifyContent: "center",
+  },
+  moodEmoji: {
+    position: "absolute",   // painted over the box, ignores overflow: hidden
+    right: 26,              // nudge by eye: smaller = further right
+    bottom: 22,             // nudge by eye: smaller = lower
+    width: 18,
+    height: 18,
+  },
 });

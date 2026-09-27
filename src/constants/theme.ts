@@ -1,21 +1,33 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+// handles single emoji AND multi-part ones (⚠️ 🤷‍♀️) correctly
+export const twemoji = (e: string) => {
+  const cps = [...e].map((c) => c.codePointAt(0)!.toString(16));
+  const stripped = cps.length <= 2 ? cps.filter((c) => c !== "fe0f") : cps;
+  return `https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/72x72/${stripped.join("-")}.png`;
+};
 
-import '@/global.css';
+export type Mood = { label: string; emoji: string; img: string };
 
-import { Platform } from 'react-native';
+export const MOODS: Mood[] = [
+  { label: "Happy", emoji: "😄" }, { label: "Giggly", emoji: "🤭" },
+  { label: "Desperate", emoji: "😰" }, { label: "Excited", emoji: "🤩" },
+  { label: "Emotional", emoji: "🥲" }, { label: "Confused", emoji: "😕" },
+  { label: "Dramatic", emoji: "😱" }, { label: "Over It", emoji: "😑" },
+  { label: "Sparkly", emoji: "✨" }, { label: "Sleepy", emoji: "😴" },
+  { label: "Hungry", emoji: "🍕" }, { label: "Stressed", emoji: "😖" },
+  { label: "Chill", emoji: "😎" }, { label: "Sassy", emoji: "😏" },
+  { label: "In Love", emoji: "🥰" }, { label: "Dead", emoji: "💀" },
+  { label: "Shook", emoji: "😲" }, { label: "Cozy", emoji: "🧸" },
+  { label: "Focused", emoji: "🤓" }, { label: "Silly", emoji: "🤪" },
+  { label: "Grateful", emoji: "🥹" }, { label: "Annoyed", emoji: "😒" },
+  { label: "Bored", emoji: "🥱" }, { label: "Eye Roll", emoji: "🙄" },
+  { label: "Strong", emoji: "💪" }, { label: "Nervous", emoji: "😬" },
+  { label: "Mind Blown", emoji: "🤯" }, { label: "Melting", emoji: "🫠" },
+  { label: "Angelic", emoji: "😇" }, { label: "Upside Down", emoji: "🙃" },
+  { label: "On Fire", emoji: "🔥" }, { label: "Fabulous", emoji: "🌈" },
+  { label: "Spilling Tea", emoji: "🍵" }, { label: "Iconic", emoji: "👑" },
+  { label: "Unbothered", emoji: "💅" },
+].map((m) => ({ ...m, img: twemoji(m.emoji) }));
 
-
-export const MOODS = [
-  { label: "Happy", emoji: "😄" },
-  { label: "Confused", emoji: "😕" },
-  { label: "Giggly", emoji: "🤭" },
-  { label: "Desperate", emoji: "😰" },
-  { label: "Excited", emoji: "🤩" },
-  { label: "Emotional", emoji: "🥲" },
-];
 
 export const PHONE_COLORS = ["#2f9fd8", "#e91e8c", "#7ac943", "#f7a41d", "#8e5bd4", "#ff5c5c"];
 
@@ -39,30 +51,6 @@ export const Colors = {
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
-  },
-});
 
 export const Spacing = {
   half: 2,
@@ -74,5 +62,4 @@ export const Spacing = {
   six: 64,
 } as const;
 
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
 export const MaxContentWidth = 800;
